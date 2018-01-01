@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # coding: utf-8
 import os
 import sys
@@ -6,7 +7,6 @@ import shutil
 import time
 import math
 from PIL import Image, ImageDraw
-import random
 import json
 import re
 
@@ -267,10 +267,12 @@ def check_screenshot():
 
 def main():
 
+    times = 10
+
     dump_device_info()
     check_screenshot()
 
-    while True:
+    for i in range(times+1):
         pull_screenshot()
         im = Image.open('./autojump.png')
         # 获取棋子和 board 的位置
@@ -279,6 +281,9 @@ def main():
         print(ts, piece_x, piece_y, board_x, board_y)
         set_button_position(im)
         jump(math.sqrt((board_x - piece_x) ** 2 + (board_y - piece_y) ** 2))
+        if i == times :
+            # jump(1000) kill
+            break
         save_debug_creenshot(ts, im, piece_x, piece_y, board_x, board_y)
         backup_screenshot(ts)
         time.sleep(1)   # 为了保证截图的时候应落稳了，多延迟一会儿
